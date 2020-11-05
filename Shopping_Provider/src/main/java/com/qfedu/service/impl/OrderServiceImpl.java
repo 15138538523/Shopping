@@ -1,6 +1,7 @@
 package com.qfedu.service.impl;
 
 import com.qfedu.config.OrderType;
+import com.qfedu.config.RabbitMQConfig;
 import com.qfedu.config.RedisKeyConfig;
 import com.qfedu.config.RedissonUtil;
 import com.qfedu.dao.OrderDao;
@@ -32,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderItemDao orderItemDao;
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private RabbitTemplate template;
     //下单
     @Override
     public R order(OrderDto dto) {
@@ -150,16 +151,22 @@ public class OrderServiceImpl implements OrderService {
                     RedissonUtil.setHashAll(RedisKeyConfig.ORDER_V2+orderForm.getId(),map);
                     //设置订单过期时间
                     RedissonUtil.setTime(RedisKeyConfig.ORDER_V2+orderForm.getId(),RedisKeyConfig.ORDER_TIME, TimeUnit.HOURS);
+                    //更改库存
+                    //调用库存服务实现库存数量的更改
+                    //生成系统消息
+                    //发送MQ消息  实现1.Mysql数据同步 2.实现延迟队列 -超时订单
+                    template.convertAndSend(RabbitMQConfig.exorder,"",orderForm.getId());
                 }finally {
-
+                    //解除锁
+                    RedissonUtil.unlock(RedisKeyConfig.ORDER_LOCK+dto.getSkuids());
                 }
             }
         }
-        return null;
+        return R.fail();
     }
-
+    //查询全部
     @Override
     public R queryUid(int uid) {
-        return null;
+        return R.ok(dao.queryByUid(uid));
     }
 }
