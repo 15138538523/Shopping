@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 public class OrderForm {
-    private Integer id; //主键id
+    private Long id; //主键id
     private Integer aid;//收货地址
     private Integer uid;//卖家地址
     private Integer totalmoney;// 单位分 总金额
@@ -20,4 +20,5 @@ public class OrderForm {
     private Integer flag;//订单的状态
     private Date ctime;//创建订单的时间
     private Date utime;//提交订单的时间
+    private Integer paytype;//支付方式 1支付宝 2微信
 }

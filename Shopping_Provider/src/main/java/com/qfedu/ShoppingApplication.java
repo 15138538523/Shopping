@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * description:启动类
  */
 @SpringBootApplication  //启动springBoot项目
-@MapperScan(basePackages = "com.qfedu.dao")
+@MapperScan(basePackages = "com.qfedu.dao") //扫描dao包
 @EnableDiscoveryClient  //发现注册与配置中心
 @EnableScheduling //开启定时任务
 public class ShoppingApplication {

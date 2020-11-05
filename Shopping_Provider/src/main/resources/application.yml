@@ -1,0 +1,21 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: OrderProvider
+  rabbitmq:
+    host: 39.105.189.141
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    nacos:
+      discovery: #实现注册中心
+        server-addr: 124.71.183.250:8848
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_cloudoffer?serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
